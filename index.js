@@ -1,38 +1,79 @@
-const http = require('http');
-const url = require('url');
-const StringDecoder = require('string_decoder').StringDecoder;
+const http = require("http");
+const url = require("url");
+const StringDecoder = require("string_decoder").StringDecoder;
 
 const server = http.createServer((req, res) => {
-    const parsedUrl = url.parse(req.url, true);
-    
-    const path = parsedUrl.pathname;
-    const trimmedPath = path.replace(/^\/+|\/+$/g, '');
-    const queryObj = parsedUrl.query;
+  const parsedUrl = url.parse(req.url, true);
 
-    const method = req.method.toLowerCase();
-    const headers = req.headers;
+  const path = parsedUrl.pathname;
+  const trimmedPath = path.replace(/^\/+|\/+$/g, "");
+  const queryObj = parsedUrl.query;
 
-    const decoder = new StringDecoder('utf-8');
-    let buffer = '';
+  const method = req.method.toLowerCase();
+  const headers = req.headers;
 
-    req.on('data', (data) => {
-        buffer += decoder.write(data);
+  const decoder = new StringDecoder("utf-8");
+  let buffer = "";
+
+  req.on("data", data => {
+    buffer += decoder.write(data);
+  });
+
+  req.on("end", () => {
+    buffer += decoder.end();
+
+    // choose handler
+    const chosenHandler =
+      typeof router[trimmedPath] !== "undefined"
+        ? router[trimmedPath]
+        : handlers.notFound;
+
+    // collate data
+    const data = {
+      path: trimmedPath,
+      method: method,
+      payload: buffer,
+      headers: headers,
+      queryStringObject: queryObj
+    };
+
+    // route request
+    chosenHandler(data, (status, load) => {
+      const statusCode = typeof status == "number" ? status : 200;
+      const payload = typeof load == "object" ? load : {};
+      const payloadString = JSON.stringify(payload);
+
+      res.writeHead(statusCode);
+      res.end(payloadString);
+
+      console.log(`Request received on path: ${method} ${trimmedPath}`);
+      console.log(`Query Object: ${JSON.stringify(queryObj)}`);
+      console.log(`Headers: ${JSON.stringify(headers)}`);
+      console.log(`Payload: ${buffer}`);
+      console.log(`Response: ${statusCode} ${payloadString}`);
     });
-
-    req.on('end', () => {
-        buffer += decoder.end();
-
-        res.end('Hello world\n');
-
-        // curl "localhost:3000/foo/bar/?q=fizz" -H "foo: bar"
-        // curl -XPOST "localhost:3000/foo/bar/?q=name" -H "foo: bar" --data-raw "This is a sample body content"
-        console.log(`Request received on path: ${method} ${trimmedPath}`);
-        console.log(`Query Object: ${JSON.stringify(queryObj)}`);
-        console.log(`Headers: ${JSON.stringify(headers)}`);
-        console.log(`Payload: ${buffer}`);
-    });
+  });
 });
 
 server.listen(3000, () => {
-    console.log('The server is listening on port 3000');
+  console.log("The server is listening on port 3000");
 });
+
+// Routing
+const handlers = {};
+
+handlers.sample = (data, callback) => {
+  // callback a http status code and a payload object
+  callback(406, { name: "Sample handler" });
+};
+
+handlers.notFound = (data, callback) => {
+  callback(404);
+};
+
+const router = {
+  sample: handlers.sample
+};
+
+// curl "localhost:3000/foo/bar/?q=fizz" -H "foo: bar"
+// curl -XPOST "localhost:3000/foo/bar/?q=name" -H "foo: bar" --data-raw "This is a sample body content"
