@@ -1,7 +1,14 @@
 const http = require('http');
+const url = require('url');
 
 const server = http.createServer((req, res) => {
-    res.end('Hello world');
+    const parsedUrl = url.parse(req.url, true);
+    const path = parsedUrl.pathname;
+    const trimmedPath = path.replace(/^\/+|\/+$/g, '');
+
+    res.end('Hello world\n');
+
+    console.log(`Request received on path: ${trimmedPath}`);
 });
 
 server.listen(3000, () => {
