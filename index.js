@@ -9,10 +9,14 @@ const server = http.createServer((req, res) => {
     const queryObj = parsedUrl.query;
 
     const method = req.method.toLowerCase();
+    const headers = req.headers;
 
     res.end('Hello world\n');
 
-    console.log(`Request received on path: ${method} ${trimmedPath} ${JSON.stringify(queryObj)}`);
+    // curl "localhost:3000/foo/bar/?q=fizz" -H "foo: bar"
+    console.log(`Request received on path: ${method} ${trimmedPath}`);
+    console.log(`Query Object: ${JSON.stringify(queryObj)}`);
+    console.log(`Headers: ${JSON.stringify(headers)}`);
 });
 
 server.listen(3000, () => {
