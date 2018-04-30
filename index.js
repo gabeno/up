@@ -3,13 +3,16 @@ const url = require('url');
 
 const server = http.createServer((req, res) => {
     const parsedUrl = url.parse(req.url, true);
+    
     const path = parsedUrl.pathname;
     const trimmedPath = path.replace(/^\/+|\/+$/g, '');
+    const queryObj = parsedUrl.query;
+
     const method = req.method.toLowerCase();
 
     res.end('Hello world\n');
 
-    console.log(`Request received on path: ${method} ${trimmedPath}`);
+    console.log(`Request received on path: ${method} ${trimmedPath} ${JSON.stringify(queryObj)}`);
 });
 
 server.listen(3000, () => {
