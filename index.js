@@ -43,6 +43,7 @@ const server = http.createServer((req, res) => {
       const payload = typeof load == "object" ? load : {};
       const payloadString = JSON.stringify(payload);
 
+      res.setHeader('Content-Type', 'application/json');
       res.writeHead(statusCode);
       res.end(payloadString);
 
