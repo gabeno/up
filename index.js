@@ -91,9 +91,15 @@ const unifiedServer = (req, res) => {
 // Routing
 const handlers = {};
 
+/*
 handlers.sample = (data, callback) => {
   // callback a http status code and a payload object
   callback(406, { name: "Sample handler" });
+};
+*/
+
+handlers.ping = (data, callback) => {
+  callback(200);
 };
 
 handlers.notFound = (data, callback) => {
@@ -101,7 +107,7 @@ handlers.notFound = (data, callback) => {
 };
 
 const router = {
-  sample: handlers.sample
+  'ping': handlers.ping
 };
 
 // curl "localhost:3000/foo/bar/?q=fizz" -H "foo: bar"
