@@ -17,8 +17,8 @@ httpSserver.listen(config.httpPort, () => {
 
 // Instantiate HTTPS server
 const httpsServerOpts = {
-  'key': fs.readFileSync('./https/key.pem'),
-  'cert': fs.readFileSync('./https/cert.pem')
+  'key': fs.readFileSync('./https/key.pem', 'utf-8'),
+  'cert': fs.readFileSync('./https/cert.pem', 'utf-8')
 };
 const httpsSserver = https.createServer(httpsServerOpts, (req, res) => {
   unifiedServer(req, res);
