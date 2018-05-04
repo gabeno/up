@@ -3,7 +3,17 @@ const https = require("https");
 const url = require("url");
 const StringDecoder = require("string_decoder").StringDecoder;
 const fs = require('fs');
+
 const config = require('./config');
+
+// @TODO: write TDD 
+/*
+const _data = require('./lib/data');
+_data.delete('test', 'new_file', (err, data) => {
+  console.log(err);
+  // console.log(data);
+});
+*/
 
 // Instantiate HTTP server
 const httpSserver = http.createServer((req, res) => {
