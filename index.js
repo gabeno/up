@@ -5,6 +5,8 @@ const StringDecoder = require("string_decoder").StringDecoder;
 const fs = require('fs');
 
 const config = require('./config');
+const handlers = require('./lib/handlers');
+const helpers = require('./lib/helpers');
 
 // @TODO: write TDD 
 /*
@@ -74,7 +76,7 @@ const unifiedServer = (req, res) => {
     const data = {
       path: trimmedPath,
       method: method,
-      payload: buffer,
+      payload: helpers.parseJsonToObject(buffer),
       headers: headers,
       queryStringObject: queryObj
     };
@@ -98,26 +100,9 @@ const unifiedServer = (req, res) => {
   });
 };
 
-// Routing
-const handlers = {};
-
-/*
-handlers.sample = (data, callback) => {
-  // callback a http status code and a payload object
-  callback(406, { name: "Sample handler" });
-};
-*/
-
-handlers.ping = (data, callback) => {
-  callback(200);
-};
-
-handlers.notFound = (data, callback) => {
-  callback(404);
-};
-
 const router = {
-  'ping': handlers.ping
+  'ping': handlers.ping,
+  'users': handlers.users
 };
 
 // curl "localhost:3000/foo/bar/?q=fizz" -H "foo: bar"
