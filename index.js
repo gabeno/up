@@ -102,7 +102,8 @@ const unifiedServer = (req, res) => {
 
 const router = {
   'ping': handlers.ping,
-  'users': handlers.users
+  'users': handlers.users,
+  'tokens': handlers.tokens
 };
 
 // curl "localhost:3000/foo/bar/?q=fizz" -H "foo: bar"
