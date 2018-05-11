@@ -9,7 +9,8 @@ environments.staging = {
   'httpPort': 3000,
   'httpsPort': 3001,
   'envName': 'staging',
-  'hashSecret': 'this_is_a_secret'
+  'hashSecret': 'this_is_a_secret',
+  'maxChecks': 5
 };
 
 // production
@@ -17,7 +18,8 @@ environments.production = {
   'httpPort': 5000,
   'httpsPort': 5001,
   'envName': 'production',
-  'hashSecret': 'this_is_a_secret'
+  'hashSecret': 'this_is_a_secret',
+  'maxChecks': 5
 };
 
 // grab env from command line
