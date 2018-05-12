@@ -10,7 +10,12 @@ environments.staging = {
   'httpsPort': 3001,
   'envName': 'staging',
   'hashSecret': 'this_is_a_secret',
-  'maxChecks': 5
+  'maxChecks': 5,
+  'twilio': {
+    'accountSID': '',
+    'authToken': '',
+    'fromPhone': ''
+  }
 };
 
 // production
@@ -19,7 +24,12 @@ environments.production = {
   'httpsPort': 5001,
   'envName': 'production',
   'hashSecret': 'this_is_a_secret',
-  'maxChecks': 5
+  'maxChecks': 5,
+  'twilio': {
+    'accountSID': '',
+    'authToken': '',
+    'fromPhone': ''
+  }
 };
 
 // grab env from command line
